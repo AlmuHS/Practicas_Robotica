@@ -2,10 +2,8 @@ tstart = tic
 tcurrent = toc(tstart)
 
 g = 0
-
-%x = 0:0.1:0;
+s = 0:0.1:2*pi;
 x = 0;
-p = 0;
 y = sin(x);
 
 axis([0 2*pi -1.5 1.5])
@@ -13,20 +11,17 @@ axis([0 2*pi -1.5 1.5])
 while tcurrent < 10
     cla
 	tcurrent = toc(tstart);
-	x = x+2*pi/10;
-   
-    if x==2*pi
+	x = x+pi/10;
+    %x = x + 1;
+    
+    if x>=2*pi
         x = 0;
     end
     
+    y = sin(s);
     
-    %p = p+2*pi/10;
-    
-    %if p == 2*pi
-    %    p = 0;
-    %end
-    
-    %x = 0:0.1:p;
+    plot(s, y, 'b');
+    drawnow
     
     y = sin(x);
     
@@ -36,4 +31,6 @@ while tcurrent < 10
         
 	drawnow
     hold on
+    
+    pause(0.05);
 end
