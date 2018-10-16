@@ -24,18 +24,19 @@ V = [P1; P2; P3; P4; P5; P6; P7; P8];
 F = [3 7 6 2; 3 4 8 7; 4 8 5 1; 2 1 5 6; 2 3 4 1; 6 7 8 5];
 
 
-axis([0 20*pi -1.5 20.5]);
+axis([0 40*pi -1.5 100]);
 axis manual  
 
-while tcurrent < 40
+while tcurrent < 20
+    cla
 	tcurrent = toc(tstart);
-	x = x + pi/10;
+	x = x + pi/100;
 	
-	V = V + sin(x);
+	V = V  cos(x);
 
-	
-	P = patch('Vertices', V, 'Faces', F, 'FaceColor', 'g'); xlim([-10 10]); ylim([-10 10]); zlim([-10 20])
+    hold on
+	P = patch('Vertices', V, 'Faces', F, 'FaceColor', 'g'); %xlim([-40 40]); ylim([-40 40]); zlim([-40 40])
 	view(3)
 	drawnow
-	delete(P);
+	%delete(P);
 end
