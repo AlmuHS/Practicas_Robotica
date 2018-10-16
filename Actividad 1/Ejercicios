@@ -1,5 +1,157 @@
-Ejercicio 5. Considere la matriz de la práctica 1, obten:
+Ejercicio 1: Considere la siguiente matriz:
 
+	11    12    13    14
+    21    22    23    24
+    31    32    33    34
+    41    42    43    44
+
+
+a) Introducir la matriz A.
+
+%Creamos la matriz A
+
+>> A = [11,12,13,14;21,22,23,24;31,32,33,34;41,42,43,44]
+
+A =
+
+    11    12    13    14
+    21    22    23    24
+    31    32    33    34
+    41    42    43    44
+
+b) Obtener los valores de la primera columna.
+
+
+>> A(:,1)
+
+ans =
+
+    11
+    21
+    31
+    41
+
+c) Obtener los valores de la segunda fila.
+
+>> A(2,:)
+
+ans =
+
+    21    22    23    24
+
+
+d) Obtener los valores de la segunda y la tercera columna.
+
+
+>> A(:,2:3)
+
+ans =
+
+    12    13
+    22    23
+    32    33
+    42    43
+
+e) Obtener la diagonal de A.
+
+>> diag(A)
+
+ans =
+
+    11
+    22
+    33
+    44
+
+
+f)Obtener una matriz de 2x2 donde todos lo elementos sean 1.
+
+>> ones(2,2)
+
+ans =
+
+     1     1
+     1     1
+
+g) Obtener una matriz unidad de orden 2x2.
+
+
+>> eye(2,2)
+
+ans =
+
+     1     0
+     0     1
+
+
+Ejercicio 2. Se trata de diferenciar el uso de funciones orientadas al elemento de las orientadas
+a operar con la matriz:
+
+a) Entrar la siguiente matriz:
+
+
+A = 
+
+0		pi
+pi/6	pi/2
+
+>> A=[0, pi;pi/6,pi/2]
+
+A =
+
+         0    3.1416
+    0.5236    1.5708
+
+
+b) Encontrar la matriz transpuesta de A
+
+>> A'
+
+ans =
+
+         0    0.5236
+    3.1416    1.5708
+
+
+c) Encontrar los autovalores y autovectores de A
+
+>> [V,D] = eig(A)
+
+V =
+
+   -0.9748   -0.8082
+    0.2230   -0.5889
+
+
+D =
+
+   -0.7185         0
+         0    2.2893
+
+
+d) Calcular la matriz columna resultante de multiplicar elemento a elemento B y C
+
+B =
+
+	1
+	1
+	1
+
+C =
+
+	2 3 4
+
+
+>> B.*C'
+
+ans =
+
+     2
+     3
+     4
+
+
+Ejercicio 5. Considere la matriz de la práctica 1, obten:
 
 a) Una matriz compuesta por los elementos que pertenezcan a las columnas 2 y 3 y a las filas 2 y 3
 
