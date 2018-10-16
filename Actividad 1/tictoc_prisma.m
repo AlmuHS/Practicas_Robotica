@@ -36,7 +36,6 @@ while tcurrent < 40
 	
 	P = patch('Vertices', V, 'Faces', F, 'FaceColor', 'g'); xlim([-10 10]); ylim([-10 10]); zlim([-10 20])
 	view(3)
-
-	pause(1)
+	drawnow
 	delete(P);
 end
