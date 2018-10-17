@@ -1,7 +1,6 @@
 tstart = tic
 tcurrent = toc(tstart)
 
-g = 0
 s = 0:0.01:2*pi;
 x = 0;
 y = sin(x);
@@ -13,7 +12,7 @@ while tcurrent < 10
 	tcurrent = toc(tstart);
     x = x + 0.005;
     
-    if x>=2*pi
+    if x >= 2*pi
         x = 0;
     end
     
