@@ -1,29 +1,33 @@
-clear tcurrent
+clear all
 
-tstart = tic
+tstart = tic;
 i = 1;
-tcurrent(i) = 0;
-tcurrent(i) = toc(tstart);
+tcurrent (i)= toc(tstart);
+periodo=5;
+desfase=2;
+t = 0:0.1:periodo+desfase;;
 
-x = 0;
+y =  signal(10, t, periodo, desfase);
 
-while tcurrent(i) < 30
-    i = i+1;
+while tcurrent(i) < periodo+desfase;
     cla
-	tcurrent(i) = toc(tstart);
-    x = x + 0.005;
+    i = i+1;
+    tcurrent (i)= toc(tstart);
+    valor(i)= signal(10, tcurrent(i), periodo, desfase);
     
-    y = sin(tcurrent);
-   
-    plot(tcurrent, y, 'b');
-    drawnow
+    axis([0 6*pi -10 10]);
+    axis manual;
     
-    y = sin(x);
+    plot(t, y);
     
-    hold on
-    plot(x,y,'r:*');
+    hold on;
+  
+    plot(tcurrent,valor,'g');
+    
+    plot(tcurrent(i),valor(i),'r:*');
         
 	drawnow
-    hold on
+    
+   
 end
 
