@@ -5,11 +5,11 @@ i = 1;
 tcurrent (i)= toc(tstart);
 periodo=5;
 desfase=2;
-t = 0:0.1:periodo+desfase;;
+t = 0:0.1:periodo+desfase;
 
 y =  signal(10, t, periodo, desfase);
 
-while tcurrent(i) < periodo+desfase;
+while tcurrent(i) < periodo+desfase+10;
     cla
     i = i+1;
     tcurrent (i)= toc(tstart);
