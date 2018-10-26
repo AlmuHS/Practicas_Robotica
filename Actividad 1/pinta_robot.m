@@ -17,7 +17,7 @@ function pinta_robot(x, y, theta, alfa)
     Tl = transformacion(x, y,theta);
     cuadradoE0 = Tl * cuadrado;
   
-    T2 = transformacion(2,0,0);
+    T2 = transformacion(2,0,alfa);
     cabeza_LR = T2 * cabeza;
     cabeza_G = Tl * cabeza_LR;
     
@@ -33,7 +33,7 @@ function pinta_robot(x, y, theta, alfa)
     
     
     %Definir los ejes
-    axis([-20 20 -20 20]);
+    %axis([-20 20 -20 20]);
     
     hold on;
        
