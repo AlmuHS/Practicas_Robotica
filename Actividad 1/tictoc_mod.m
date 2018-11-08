@@ -9,7 +9,7 @@ t = 0:0.1:periodo+desfase;
 
 y =  signal(10, t, periodo, desfase);
 
-while tcurrent(i) < periodo+desfase+10;
+while tcurrent(i) < periodo+desfase+5;
     cla
     i = i+1;
     tcurrent (i)= toc(tstart);

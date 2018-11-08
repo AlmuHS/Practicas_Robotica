@@ -12,9 +12,9 @@ i = 1;
 tiempo(i) = 0;
 theta(i) = 0;
 
-desfase = 1;
+desfase = 5;
 periodo = 5;
-amplitud = 90;
+amplitud = 90;  
 
 while tiempo(i) < 10
     cla

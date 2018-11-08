@@ -1,13 +1,13 @@
-tstart = tic
-tcurrent = toc(tstart)
+tstart = tic;
+tcurrent = toc(tstart);
 
 s = 0:0.01:2*pi;
 x = 0;
 y = sin(x);
 
-axis([0 2*pi -1.5 1.5])
+axis([0 2*pi -1.5 1.5]);
 
-while tcurrent < 10
+while tcurrent < 6*pi
     cla
 	tcurrent = toc(tstart);
     x = x + 0.005;

@@ -32,7 +32,7 @@ while tcurrent < 20
 	tcurrent = toc(tstart);
 	x = x + pi/100;
 	
-	V = V  cos(x);
+	V = V + cos(x);
 
     hold on
 	P = patch('Vertices', V, 'Faces', F, 'FaceColor', 'g'); %xlim([-40 40]); ylim([-40 40]); zlim([-40 40])
