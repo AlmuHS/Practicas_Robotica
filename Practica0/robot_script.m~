@@ -1,0 +1,12 @@
+tstart = tic;
+
+%Definir motores y sensores
+
+tiempo = toc(tstart);
+
+while tiempo < 2
+    i++;
+    tiempo = toc(tstart);
+    
+    %Mandar orden motor
+end
