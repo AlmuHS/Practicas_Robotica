@@ -21,12 +21,13 @@ while tiempo(i) < 2
     i = i+1;
     tiempo(i) = toc(tstart);
     
+    %Leer encoder cabeza -> Angulo_Cabeza[i]
+    anguloCabeza(i) = NXT_GetOutputState(B); 
+    
     %Mandar orden motor cabeza -> POWER = 50
     motorCabeza.Power = 50;
     motorCabeza.SendToNXT();
     
-    %Leer encoder cabeza -> Angulo_Cabeza[i]
-    anguloCabeza(i) = NXT_GetOutputState(B); 
     
     pinta_robot(0, 0, 0, anguloCabeza(i));
     
