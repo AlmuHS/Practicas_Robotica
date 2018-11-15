@@ -1,10 +1,12 @@
 %borrar variables
-clear tiempo(i)
-clear giro_C(i)
+clear tiempo
+clear giro_C
 clear motor_A
 clear motor_B
 clear motor_C
 clear angulo_rad
+clear angulo_ref
+
 %declaramos motores
 motor_A=NXTMotor('A')
 motor_B=NXTMotor('B')
@@ -14,31 +16,36 @@ motor_C=NXTMotor('C')
 NXT_ResetMotorPosition(0, false);
 NXT_ResetMotorPosition(1, false);
 NXT_ResetMotorPosition(2, false);
-%iniciamos tiempo
+
+%Inicializamos variables
 i=1;
+angulo_ref(i)=0;
+C=NXT_GetOutputState(2);
+giro_C(i)=C.RotationCount;
+Error(i)=angulo_ref(i)-giro_C(i);
+
+%iniciamos tiempo
 tstart=tic;
 tiempo(i)=toc(tstart);
 
 %Angulo deseado
-angulo_ref=90;
+%angulo_ref=90;
 
-while tiempo(i)<3
+%bucle
+while tiempo(i)<10 || Error(i)>0.1
     i=i+1;
     tiempo(i)=toc(tstart);
+    %comprobar sino quitar Error en while y if
+    if tiempo(i)<10 angulo_ref(i)=signal(90,9,tiempo(i),1); end; %Sera cambiado por signal
     C=NXT_GetOutputState(2);
     giro_C(i)=C.RotationCount;
-    Error(i)=angulo_ref-giro_C;
-    motor_C.Power=0.4*Error;
+    Error(i)=(angulo_ref(i)*180)/pi-giro_C(i);
+    motor_C.Power=int8(0.18*Error(i));
     motor_C.SendToNXT();  
     angulo_rad(i)=(giro_C(i)/180)*pi
     pinta_robot(0,0,0,angulo_rad(i));
 end
 motor_C.Stop('off');
-%plot (tiempo(1,:),giro_C(1,:));
-
-%Error(i)=angulo_ref-angulo
-%Power=K*Error
-%La k sera 0.5
-
-%Leemos encoder, calculamos el error y mandamos la orden con una potencia
-%proporcional.
+figure
+plot (tiempo,angulo_ref(1,:),tiempo,giro_C(1,:));
+drawnow

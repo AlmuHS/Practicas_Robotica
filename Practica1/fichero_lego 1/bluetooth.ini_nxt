@@ -1,5 +1,5 @@
 [Bluetooth]
-SerialPort=COM8
+SerialPort=COM5
 BaudRate=57600
 DataBits=8
 SendSendPause=10
