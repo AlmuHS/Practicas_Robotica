@@ -6,6 +6,7 @@ clear motor_B
 clear motor_C
 clear angulo_rad
 clear angulo_ref
+clear distancia
 
 %declaramos motores
 motor_A=NXTMotor('A')
@@ -40,7 +41,7 @@ while tiempo(i)<12
     i=i+1;
     tiempo(i)=toc(tstart);
     %comprobar sino quitar Error en while y if
-    angulo_ref(i)=signal(90,9,tiempo(i),1); %Sera cambiado por signal
+    angulo_ref(i)=signal(90, tiempo(i),9, 1); %Sera cambiado por signal
     C=NXT_GetOutputState(2);
     giro_C(i)=C.RotationCount;
     Error(i)=angulo_ref(i)-giro_C(i);
@@ -48,7 +49,7 @@ while tiempo(i)<12
     motor_C.SendToNXT();
     distancia(i)=GetUltrasonic(SENSOR_4);
     angulo_rad(i)=(giro_C(i)/180)*pi
-    pinta_robot(0,0,0,angulo_rad(i));
+    pinta_robot(0,0,distancia(i),0,angulo_rad(i));
 end
 motor_C.Stop('off');
 figure

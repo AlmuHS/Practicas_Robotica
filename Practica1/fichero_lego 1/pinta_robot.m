@@ -1,7 +1,7 @@
 %la primera fila tendra las coordenadas x
 %theta sera el giro de todo el robot y 
 %alfa sera el giro de la cabeza respecto a la posicion del cuerpo
-function pinta_robot(x,y,theta,alfa)
+function pinta_robot(x,y,distanciaP,theta,alfa)
     %robot
     P1=[3.5 2.5 0 1]'
     P2=[-3.5 2.5 0 1]'
@@ -61,6 +61,11 @@ function pinta_robot(x,y,theta,alfa)
     rue3_g=transformacion(x,y,theta)*rue3;
     rob_g=transformacion(x,y,theta)*rob;
     
+    %calculamos punto
+    T_LR=transformacion(x,y,theta);%posicion robot con su rotacion
+    T_LC=transformacion(2,0,alfa);%posicion cabeza con su rotacion
+    P_LC=[distanciaP 0 0 1]'%distancia a la que se encuentra el punto respecto cabeza
+    punto_global=T_LR*T_LC*P_LC;
     %pintamos
     plot(rob_g(1,:), rob_g(2,:),'R')
     hold on
@@ -75,7 +80,9 @@ function pinta_robot(x,y,theta,alfa)
     plot(sen2_g(1,:), sen2_g(2,:),'B')
     hold on
     plot(cab_g(1,:), cab_g(2,:),'B')
-    axis([-20,20,-20,20])
+    hold on
+    plot(punto_global(1),punto_global(2),'*G')
+    axis([-40,40,-40,40])
     drawnow
     
     

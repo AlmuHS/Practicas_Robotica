@@ -6,11 +6,15 @@ clear motor_B
 clear motor_C
 clear angulo_rad
 clear angulo_ref
+clear distancia
 
 %declaramos motores
 motor_A=NXTMotor('A')
 motor_B=NXTMotor('B')
 motor_C=NXTMotor('C')
+
+%Declaramos sensor
+OpenUltrasonic(SENSOR_4);
 
 %reseteamos encoders
 NXT_ResetMotorPosition(0, false);
@@ -23,6 +27,7 @@ angulo_ref(i)=0;
 C=NXT_GetOutputState(2);
 giro_C(i)=C.RotationCount;
 Error(i)=angulo_ref(i)-giro_C(i);
+distancia(i)=0;
 
 %iniciamos tiempo
 tstart=tic;
@@ -32,20 +37,26 @@ tiempo(i)=toc(tstart);
 %angulo_ref=90;
 
 %bucle
-while tiempo(i)<10 || Error(i)>0.1
+while tiempo(i)<12
     i=i+1;
     tiempo(i)=toc(tstart);
     %comprobar sino quitar Error en while y if
-    if tiempo(i)<10 angulo_ref(i)=signal(90,9,tiempo(i),1); end; %Sera cambiado por signal
+    angulo_ref(i)=signal(90, tiempo(i),9, 1); %Sera cambiado por signal
     C=NXT_GetOutputState(2);
     giro_C(i)=C.RotationCount;
-    Error(i)=(angulo_ref(i)*180)/pi-giro_C(i);
-    motor_C.Power=int8(0.18*Error(i));
-    motor_C.SendToNXT();  
+    Error(i)=angulo_ref(i)-giro_C(i);
+    motor_C.Power=int8(0.22*Error(i));
+    motor_C.SendToNXT();
+    distancia(i)=GetUltrasonic(SENSOR_4);
     angulo_rad(i)=(giro_C(i)/180)*pi
     pinta_robot(0,0,0,angulo_rad(i));
 end
 motor_C.Stop('off');
 figure
 plot (tiempo,angulo_ref(1,:),tiempo,giro_C(1,:));
+figure
+plot(tiempo,distancia(1,:));
 drawnow
+
+%Desactivamos sensor
+CloseSensor(SENSOR_4);
