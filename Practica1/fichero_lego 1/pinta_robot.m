@@ -61,11 +61,31 @@ function pinta_robot(x,y,distanciaP,theta,alfa)
     rue3_g=transformacion(x,y,theta)*rue3;
     rob_g=transformacion(x,y,theta)*rob;
     
-    %calculamos punto
-    T_LR=transformacion(x,y,theta);%posicion robot con su rotacion
-    T_LC=transformacion(2,0,alfa);%posicion cabeza con su rotacion
-    P_LC=[distanciaP 0 0 1]'%distancia a la que se encuentra el punto respecto cabeza
-    punto_global=T_LR*T_LC*P_LC;
+    
+    
+    numElem=size(distanciaP);
+    
+    for i = 1:numElem(2)
+        P_LC =[distanciaP(i) 0 0 1]'%distancia a la que se encuentra el punto respecto cabeza
+        
+        %TODO: variar theta
+        
+        %calculamos punto
+        T_LR=transformacion(x,y,theta);%posicion robot con su rotacion
+        T_LC=transformacion(2,0,alfa(i));%posicion cabeza con su rotacion
+        
+        punto_global=T_LR*T_LC*P_LC;
+        
+        if i == 1
+            mapa = punto_global;
+        end;
+        
+        mapa = cat(3, punto_global, mapa);
+    end
+    
+    %P_LC=[distanciaP 0 0 1]'%distancia a la que se encuentra el punto respecto cabeza
+    %punto_global=T_LR*T_LC*P_LC;
+    
     %pintamos
     plot(rob_g(1,:), rob_g(2,:),'R')
     hold on
@@ -81,7 +101,15 @@ function pinta_robot(x,y,distanciaP,theta,alfa)
     hold on
     plot(cab_g(1,:), cab_g(2,:),'B')
     hold on
-    plot(punto_global(1),punto_global(2),'*G')
+    
+   
+    numElem=size(distanciaP);
+    
+    for i = 1:numElem(2)
+        plot(mapa(1,:,i),mapa(2,:,i),'*G');
+    end
+    
+    %plot(punto_global(1,:),punto_global(2,:),'*G')
     axis([-40,40,-40,40])
     drawnow
     

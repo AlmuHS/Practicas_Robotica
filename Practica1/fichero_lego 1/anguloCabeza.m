@@ -49,7 +49,7 @@ while tiempo(i)<12
     motor_C.SendToNXT();
     distancia(i)=GetUltrasonic(SENSOR_4);
     angulo_rad(i)=(giro_C(i)/180)*pi
-    pinta_robot(0,0,distancia(i),0,angulo_rad(i));
+    pinta_robot(0,0,distancia,0,angulo_rad);
 end
 motor_C.Stop('off');
 figure
