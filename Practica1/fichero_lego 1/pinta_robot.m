@@ -66,20 +66,16 @@ function mapa_=pinta_robot(x,y,distanciaP,theta,alfa, mapa)
     
     %for i = 1:numElem(2)
         P_LC =[distanciaP 0 0 1]'%distancia a la que se encuentra el punto respecto cabeza
-        
-        %TODO: variar theta
-        
+                
         %calculamos punto
         T_LR=transformacion(x,y,theta);%posicion robot con su rotacion
         T_LC=transformacion(2,0,alfa);%posicion cabeza con su rotacion
         
         punto_global=T_LR*T_LC*P_LC;
         
-        mapa_ = cat(3, punto_global, mapa);
+        %mapa_ = cat(3, punto_global, mapa);
+        mapa_ = [mapa punto_global];
     %end
-    
-    %P_LC=[distanciaP 0 0 1]'%distancia a la que se encuentra el punto respecto cabeza
-    %punto_global=T_LR*T_LC*P_LC;
     
     %pintamos
     plot(rob_g(1,:), rob_g(2,:),'R')
