@@ -24,10 +24,11 @@ NXT_ResetMotorPosition(2, false);
 %Inicializamos variables
 i=1;
 angulo_ref(i)=0;
+angulo_rad(i)=0;
 C=NXT_GetOutputState(2);
 giro_C(i)=C.RotationCount;
 Error(i)=angulo_ref(i)-giro_C(i);
-distancia(i)=0;
+distancia(i)=inf;
 
 %iniciamos tiempo
 tstart=tic;

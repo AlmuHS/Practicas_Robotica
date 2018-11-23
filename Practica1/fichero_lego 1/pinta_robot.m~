@@ -44,11 +44,9 @@ function pinta_robot(x,y,distanciaP,theta,alfa)
     
    %Hacemos rotaciones 
     cla
-    numElem=size(distanciaP);
-    
     
     %Giramos cabeza
-    T=transformacion(2,0,alfa(numElem(2)));%movemos angulo cabeza y desplazamos respecto al cuerpo
+    T=transformacion(2,0,alfa()%movemos angulo cabeza y desplazamos respecto al cuerpo
     cab_l=T*cab
     cab_g=transformacion(x,y,theta)*cab_l
     
@@ -65,7 +63,7 @@ function pinta_robot(x,y,distanciaP,theta,alfa)
     
     
     
-    
+    numElem=size(distanciaP);
     
     for i = 1:numElem(2)
         P_LC =[distanciaP(i) 0 0 1]'%distancia a la que se encuentra el punto respecto cabeza
