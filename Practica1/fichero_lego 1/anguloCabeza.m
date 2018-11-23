@@ -37,6 +37,8 @@ tiempo(i)=toc(tstart);
 %Angulo deseado
 %angulo_ref=90;
 
+mapa = [];
+
 %bucle
 while tiempo(i)<12
     i=i+1;
@@ -46,11 +48,13 @@ while tiempo(i)<12
     C=NXT_GetOutputState(2);
     giro_C(i)=C.RotationCount;
     Error(i)=angulo_ref(i)-giro_C(i);
+    
     motor_C.Power=int8(0.22*Error(i));
     motor_C.SendToNXT();
+    
     distancia(i)=GetUltrasonic(SENSOR_4);
     angulo_rad(i)=(giro_C(i)/180)*pi
-    pinta_robot(0,0,distancia,0,angulo_rad);
+    mapa = pinta_robot(0,0,distancia(i),0,angulo_rad(i), mapa);
 end
 motor_C.Stop('off');
 figure
