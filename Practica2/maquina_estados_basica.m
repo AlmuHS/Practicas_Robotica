@@ -72,7 +72,7 @@ estado=1; %estado inicial
 stop_distance=20; %distancia de para ante obst�culo
 t_marcha_atras=2; %tiempo de marcha hacia atr�s.
 transicion=1% inicializa la variable que marca el inicio el mov de la cabeza
-
+T = 9 %periodo
 
 %comienza el bucle
 disp('pulsa el bumper para comenzar')
@@ -131,10 +131,14 @@ while  (GetSwitch(SENSOR_1)==0)
                     end
                 end
              
-            case 3 %girando cabeza    
-                estado=4; %la transici�n a estado girando robot
-                transicion=i; %indice que marca el inicio del estado 4
+            case 3 %girando cabeza
+                inc = t(i) - t(transicion);
                 
+                if (inc >= T+1)
+                    estado=4; %la transici�n a estado girando robot
+                    transicion=i; %indice que marca el inicio del estado
+                end
+                    
             case 4 %girando robot
                 estado=5; %la transici�n a estado marcha atr�s
                 transicion=i; %indice que marca el inicio del estado 5
@@ -178,8 +182,19 @@ while  (GetSwitch(SENSOR_1)==0)
                Traction_motor_control;
         
             case 3 %girando cabeza
+                
+                    %Calcular referencia
+                    referencia_cabeza(i) = signal(90, t(i), T, t(transicion)); %Sera cambiado por signal
+                    
+                    %Calcular error
+                    error_sonar(i) = referencia_cabeza(i) - giro_cabeza(i);
 
-        
+                    %Calcular potencia
+                    Power = int8(0.22*error_sonar(i));
+                    
+                    %Mandar comando a motor
+                    Head_motor_control;
+            
             case 4 %girando sobre si mismo
                     
             
