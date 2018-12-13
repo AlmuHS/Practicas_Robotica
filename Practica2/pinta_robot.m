@@ -1,0 +1,108 @@
+%la primera fila tendra las coordenadas x
+%theta sera el giro de todo el robot y 
+%alfa sera el giro de la cabeza respecto a la posicion del cuerpo
+function mapa_=pinta_robot(x,y,distanciaP,theta,alfa, mapa)
+    %robot
+    P1=[3.5 2.5 0 1]'
+    P2=[-3.5 2.5 0 1]'
+    P3=[-3.5 -2.5 0 1]'
+    P4=[3.5 -2.5 0 1]'
+    rob=[P1 P2 P3 P4 P1]
+    %cabeza
+    P5=[0.5 1 0 1]'
+    P6=[-0.5 1 0 1]'
+    P7=[-0.5 -1 0 1]'
+    P8=[0.5 -1 0 1]'
+    cab=[P5 P6 P7 P8 P5]
+    %Sensor
+    P20=[0.7 0.8 0 1]'
+    P21=[0.5 0.8 0 1]'
+    P22=[0.5 0.3 0 1]'
+    P23=[0.7 0.3 0 1]'
+    sen1=[P20 P21 P22 P23 P20]
+    P24=[0.7 -0.3 0 1]'
+    P25=[0.5 -0.3 0 1]'
+    P26=[0.5 -0.8 0 1]'
+    P27=[0.7 -0.8 0 1]'
+    sen2=[P24 P25 P26 P27 P24]
+    %ruedas
+    P9=[-2.0 3.3 0 1]'
+    P10=[-3.2 3.3 0 1]'
+    P11=[-3.2 2.6 0 1]'
+    P12=[-2.0 2.6 0 1]'
+    rue1=[P9 P10 P11 P12 P9]
+    P13=[-2.0 -3.3 0 1]'
+    P14=[-3.2 -3.3 0 1]'
+    P15=[-3.2 -2.6 0 1]'
+    P16=[-2.0 -2.6 0 1]'
+    rue2=[P13 P14 P15 P16 P13]
+    P30=[4 0.5 0 1]'
+    P31=[3.5 0.5 0 1]'
+    P32=[3.5 -0.5 0 1]'
+    P33=[4 -0.5 0 1]'
+    rue3=[P30 P31 P32 P33 P30]
+    
+   %Hacemos rotaciones 
+    cla
+    numElem=size(distanciaP);
+    
+    
+    %Giramos cabeza
+    T=transformacion(2,0,alfa(numElem(2)));%movemos angulo cabeza y desplazamos respecto al cuerpo
+    cab_l=T*cab
+    cab_g=transformacion(x,y,theta)*cab_l
+    
+    sen1=T*sen1;
+    sen1_g=transformacion(x,y,theta)*sen1
+    sen2=T*sen2;
+    sen2_g=transformacion(x,y,theta)*sen2
+    
+    %Giro ladrillo
+    rue1_g=transformacion(x,y,theta)*rue1;
+    rue2_g=transformacion(x,y,theta)*rue2;
+    rue3_g=transformacion(x,y,theta)*rue3;
+    rob_g=transformacion(x,y,theta)*rob;
+    
+    
+    %for i = 1:numElem(2)
+        P_LC =[distanciaP 0 0 1]'%distancia a la que se encuentra el punto respecto cabeza
+                
+        %calculamos punto
+        T_LR=transformacion(x,y,theta);%posicion robot con su rotacion
+        T_LC=transformacion(2,0,alfa);%posicion cabeza con su rotacion
+        
+        punto_global=T_LR*T_LC*P_LC;
+        
+        %mapa_ = cat(3, punto_global, mapa);
+        mapa_ = [mapa punto_global];
+    %end
+    
+    %pintamos
+    plot(rob_g(1,:), rob_g(2,:),'R')
+    hold on
+    plot(rue1_g(1,:), rue1_g(2,:),'R')
+    hold on
+    plot(rue2_g(1,:), rue2_g(2,:),'R')
+    hold on
+    plot(rue3_g(1,:), rue3_g(2,:),'R')
+    hold on
+    plot(sen1_g(1,:), sen1_g(2,:),'B')
+    hold on
+    plot(sen2_g(1,:), sen2_g(2,:),'B')
+    hold on
+    plot(cab_g(1,:), cab_g(2,:),'B')
+    hold on
+    
+   
+    numElem=size(distanciaP);%En esta version ya no se utiliza
+    
+    for i = 1:numElem(2)
+        plot(mapa_(1,:,i),mapa_(2,:,i),'*G');
+    end
+    
+    %plot(punto_global(1,:),punto_global(2,:),'*G')
+    axis([-40,40,-40,40])
+    drawnow
+    
+    
+end

@@ -57,8 +57,20 @@ giro_cabeza(i)=cabeza.RotationCount;
 giro_derecho(i)=0;
 giro_izquierdo(i)=0;
 
+%posicion inicial
+x(i) = 0;
+y(i) =0;
+theta(i) = 0;
+giro_derecho(i)=0;
+giro_izquierdo(i)=0;
+mapa=[];%Mapa vacio para representar obstaculos
+
 %medida incial
 distancia(i) = GetUltrasonic(SENSOR_4);
+
+%Inicio lectura obstaculos
+Iobstaculos;
+
 
 %--------------------
 % Valores iniciales
@@ -67,10 +79,9 @@ distancia(i) = GetUltrasonic(SENSOR_4);
 t(i)=0;
 
 estado=1; %estado inicial
-
-
 stop_distance=20; %distancia de para ante obstï¿½culo
 t_marcha_atras=2; %tiempo de marcha hacia atrï¿½s.
+t_giro=1;%tiempo de giro. New
 transicion=1% inicializa la variable que marca el inicio el mov de la cabeza
 T = 9 %periodo
 
@@ -94,8 +105,11 @@ while  (GetSwitch(SENSOR_1)==0)
     %---------------------
     %lectura seï¿½ales y calculo del heading
     %-------------------------------
-    
-    Signal_reading_odo;
+    signal_reading_odo;
+
+    [x(i) y(i) theta(i)] = calculo_odometria(giro_derecho,giro_izquierdo, x ,y,theta,i);%Calcula la nueva posicion del robot [x y theta]
+    giro_cabeza_radianes(i)=giro_cabeza(i)/180*pi;
+    mapa=pinta_robot(x(i),y(i),distancia(i),theta(i),giro_cabeza_radianes(i), mapa);
 
 
     estado %muestra el estado del sistema
@@ -127,7 +141,7 @@ while  (GetSwitch(SENSOR_1)==0)
                     else       
                         estado=3; %transiciï¿½n a estado girando cabeza
                         transicion=i; %indice que marca el inicio del estado 3
-
+                        Iobstaculos=i;%indice que marca el inicio de la recogida de puntos
                     end
                 end
              
@@ -137,11 +151,15 @@ while  (GetSwitch(SENSOR_1)==0)
                 if (inc >= T+1)
                     estado=4; %la transiciï¿½n a estado girando robot
                     transicion=i; %indice que marca el inicio del estado
+                    motor_cabeza.Stop('off'); %Para la cabeza si no ha terminado completamente
+
                 end
                     
             case 4 %girando robot
-                estado=5; %la transiciï¿½n a estado marcha atrï¿½s
-                transicion=i; %indice que marca el inicio del estado 5
+                if (t(i)-t(transicion)>t_giro) 
+                    estado=5; %la transiciï¿½n a estado marcha atrï¿½s
+                    transicion=i; %indice que marca el inicio del estado 5
+                end
                 
            case 5 %marcha atrï¿½s
                 if (t(i)-t(transicion)>t_marcha_atras)                  
@@ -196,9 +214,27 @@ while  (GetSwitch(SENSOR_1)==0)
                     Head_motor_control;
             
             case 4 %girando sobre si mismo
-                    
-            
+               %El giro deberá depender de los obstaculos detectados desde la lectura de la cabeza.
+               %Podemos obtenerlos del mapa de puntos o asociando el vector
+               %distancia con el angulo de la cabeza en ese momento.
+               %numObstaculos=transicion-Iobstaculos;
+               Giro=0;%Dependiendo de su signo se gira a un lado u a otro.
+               for j = Iobstaculos:transicion
+                    Giro=Giro+(distancia(j)*giro_cabeza(j));
+               end
+               if(Giro>0)%Giro derecha
+                   Power1=-10;
+                   Power2=13;
+               else %Giro izquierda
+                   Power1=13;
+                   Power2=-10;
+               end
                
+              %---------------------
+              %Manda los comandos de control a los motores
+              %-------------
+               Traction_motor_control;   
+                   
             case 5 %andando hacia atrï¿½s
                 %establece los valores de control 
                vel=-20;
