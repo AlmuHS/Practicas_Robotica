@@ -24,8 +24,10 @@ clear giro_derecho giro_izquierdo
 global radio_rueda
 global l %distancia entre ruedas
 
-l=7;
-radio_rueda=4;
+l=6.2;%En nuestro robot en 5.75
+radio_rueda=3;%En nuestro robot 2.8
+Kgiro = 0.25; %constante para el giro
+ref_theta = 90; %angulo de giro deseado
 
 % Declaraci�n de sensores
 OpenSwitch(SENSOR_2); % definici�n del sensor de contacto detceta colii�n
@@ -69,7 +71,8 @@ mapa=[];%Mapa vacio para representar obstaculos
 distancia(i) = GetUltrasonic(SENSOR_4);
 
 %Inicio lectura obstaculos
-Iobstaculos;
+Iobstaculos=0;
+
 
 
 %--------------------
@@ -81,7 +84,7 @@ t(i)=0;
 estado=1; %estado inicial
 stop_distance=20; %distancia de para ante obst�culo
 t_marcha_atras=2; %tiempo de marcha hacia atr�s.
-t_giro=1;%tiempo de giro. New
+t_giro=4;%tiempo de giro. New
 transicion=1% inicializa la variable que marca el inicio el mov de la cabeza
 T = 9 %periodo
 
@@ -95,9 +98,12 @@ while(GetSwitch(SENSOR_1)==1)
 end
 
 disp('comienza el bucle')
+%Pulsador
+pulsador = GetSwitch(SENSOR_1);
 
-while  (GetSwitch(SENSOR_1)==0)
-  
+while  (pulsador==0)
+    
+    pulsador = GetSwitch(SENSOR_1);
     i=i+1; %indice global
     t(i)= toc(tstart); %tiempo global del bucle
     
@@ -108,6 +114,7 @@ while  (GetSwitch(SENSOR_1)==0)
     signal_reading_odo;
 
     [x(i) y(i) theta(i)] = calculo_odometria(giro_derecho,giro_izquierdo, x ,y,theta,i);%Calcula la nueva posicion del robot [x y theta]
+    yaw(i) = theta(i)*180/pi
     giro_cabeza_radianes(i)=giro_cabeza(i)/180*pi;
     mapa=pinta_robot(x(i),y(i),distancia(i),theta(i),giro_cabeza_radianes(i), mapa);
 
@@ -218,17 +225,20 @@ while  (GetSwitch(SENSOR_1)==0)
                %Podemos obtenerlos del mapa de puntos o asociando el vector
                %distancia con el angulo de la cabeza en ese momento.
                %numObstaculos=transicion-Iobstaculos;
-               Giro=0;%Dependiendo de su signo se gira a un lado u a otro.
-               for j = Iobstaculos:transicion
-                    Giro=Giro+(distancia(j)*giro_cabeza(j));
-               end
-               if(Giro>0)%Giro derecha
-                   Power1=-10;
-                   Power2=13;
-               else %Giro izquierda
-                   Power1=13;
-                   Power2=-10;
-               end
+               
+               %Giro=0;%Dependiendo de su signo se gira a un lado u a otro.
+               %for j = Iobstaculos:transicion
+                %    Giro=Giro+(distancia(j)*giro_cabeza(j));
+              % end
+               %if(Giro>0)%Giro derecha
+                   Power = int8(Kgiro *[ref_theta - yaw(i)]);
+                   Power1=Power;
+                   Power2=-Power;
+               %else %Giro izquierda
+                   %Power = int8(Kgiro *[ref_theta - theta(i)]);
+                   %Power1=-Power;
+                   %Power2=Power;
+%                end
                
               %---------------------
               %Manda los comandos de control a los motores
