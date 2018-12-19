@@ -66,7 +66,7 @@ while (t0+h*k) < tf,
      min_dist = minima_distancia_new(camino, pos_actual);
      i = i + min_dist;
      
-     pos_dest = camino(i,:);
+     pos_dest = camino(i+4,:);
      
      
      volante = calculo_angulo_triciclo(l, pos_actual, pos_dest, volante);
