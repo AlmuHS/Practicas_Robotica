@@ -1,0 +1,10 @@
+function angle=calculo_angulo_triciclo(l, posicionIni, posicionFin, anguloIni)
+    
+    incremento = (posicionIni(1) - posicionFin(1)) * sin(anguloIni) - (posicionIni(2) - posicionFin(2)) * cos(anguloIni);
+    dist_euclidea = sqrt( (posicionIni(1) - posicionFin(1) )^2 + (posicionIni(2) - posicionFin(2) )^2);
+    R = (dist_euclidea^2)/(incremento*2);
+
+    angle = atan(l/R);
+end
+    
+    
