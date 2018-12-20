@@ -1,6 +1,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Simulaci髇 del movimiento de un robot m髒il
+% Simulaci贸n del movimiento de un robot m贸vil
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear all
@@ -29,7 +29,7 @@ pose0=[0; 0; pi/2];
 %tiempo inicial
 t0=0;
 
-%final de la simulaci髇
+%final de la simulaci贸n
 tf=100;
 %tf=5;
 
@@ -40,17 +40,17 @@ t=0:h:tf;
 %indice de la matriz
 k=0;
 
-%inicializaci髇 valores iniciales
+%inicializaci贸n valores iniciales
 pose(:,k+1)=pose0;
 
 t(k+1)=t0;
 
 while (t0+h*k) < tf,
-    %actualizaci髇
+    %actualizaci贸n
     k=k+1;
     
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %valores de los par醡etros de control
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %valores de los par谩metros de control
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  min_dist = minima_distancia_new(camino, pose(1:2,k));
  pos_dest=camino(min_dist+20,:);
@@ -58,7 +58,7 @@ while (t0+h*k) < tf,
  velocidad=5;
  volante = calculo_angulo_triciclo(l, pose(1:2,k), pos_dest, pose(3,k));
  
- %ambas se combinan en la variable conducci髇 
+ %ambas se combinan en la variable conducci贸n 
  conduccion=[velocidad volante];
  
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -68,7 +68,7 @@ while (t0+h*k) < tf,
  punto=[pos_dest(1) pos_dest(2)];
 
     
-%metodo de integraci髇 ruge-kuta y representaci髇 gr醘ica
+%metodo de integraci贸n ruge-kuta y representaci贸n gr谩fica
 
 pose(:,k+1)=kuta(t(k),pose(:,k),h,conduccion);
 
