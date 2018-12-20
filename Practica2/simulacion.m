@@ -1,6 +1,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Simulaciï¿½n del movimiento de un robot mï¿½vil
+% Simulación del movimiento de un robot móvil
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear all
@@ -25,14 +25,13 @@ l=1.5; %distancia entre rudas delanteras y traseras, tambien definido en modelo
 %pose0=[30; 30; 0];
 
 pose0=[0; 0; pi/2];
-volante = 0;
 
 %tiempo inicial
 t0=0;
 
-%final de la simulaciï¿½n
+%final de la simulación
 tf=100;
-tf=5;
+%tf=5;
 
 %paso de integracion
 h=0.1;
@@ -41,49 +40,37 @@ t=0:h:tf;
 %indice de la matriz
 k=0;
 
-%inicializaciï¿½n valores iniciales
+%inicialización valores iniciales
 pose(:,k+1)=pose0;
 
 t(k+1)=t0;
 
-i = 1;
-pos_dest = camino(i,:);
-
 while (t0+h*k) < tf,
-    %actualizaciï¿½n
+    %actualización
     k=k+1;
-    i = i+1;
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %valores de los parï¿½metros de control
+    %valores de los parámetros de control
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ min_dist = minima_distancia_new(camino, pose(1:2,k));
+ pos_dest=camino(min_dist+20,:);
+ % estas son las variables de control    
+ velocidad=5;
+ volante = calculo_angulo_triciclo(l, pose(1:2,k), pos_dest, pose(3,k));
  
-     % estas son las variables de control    
-     velocidad=5;
-     %volante=-0.1416;
+ %ambas se combinan en la variable conducción 
+ conduccion=[velocidad volante];
+ 
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+ %para representar el punto onjetivo sobre la trayectoria
+ 
+ punto=[pos_dest(1) pos_dest(2)];
 
-     pos_actual = pos_dest;
-     min_dist = minima_distancia_new(camino, pos_actual);
-     i = i + min_dist;
-     
-     pos_dest = camino(i+4,:);
-     
-     
-     volante = calculo_angulo_triciclo(l, pos_actual, pos_dest, volante);
+    
+%metodo de integración ruge-kuta y representación gráfica
 
-     %ambas se combinan en la variable conducciï¿½n 
-     conduccion=[velocidad volante];
-
-     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-     %para representar el punto onjetivo sobre la trayectoria
-
-     punto=[pos_dest(1) pos_dest(2)];
-
-
-    %metodo de integraciï¿½n ruge-kuta y representaciï¿½n grï¿½fica
-
-    pose(:,k+1)=kuta(t(k),pose(:,k),h,conduccion);
+pose(:,k+1)=kuta(t(k),pose(:,k),h,conduccion);
 
 end
 
