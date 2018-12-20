@@ -24,8 +24,8 @@ clear giro_derecho giro_izquierdo
 global radio_rueda
 global l %distancia entre ruedas
 
-l=;%En nuestro robot en 5.75
-radio_rueda=3;%En nuestro robot 2.8
+l=7.4;%En nuestro robot en 5.75
+radio_rueda=4.46 ;%En nuestro robot 2.8
 Kgiro = 0.25; %constante para el giro
 ref_theta = 90; %angulo de giro deseado
 
@@ -221,10 +221,11 @@ while  (pulsador==0)
                     Head_motor_control;
             
             case 4 %girando sobre si mismo
-               %El giro deberá depender de los obstaculos detectados desde la lectura de la cabeza.
+               %El giro deberï¿½ depender de los obstaculos detectados desde la lectura de la cabeza.
                %Podemos obtenerlos del mapa de puntos o asociando el vector
                %distancia con el angulo de la cabeza en ese momento.
                %numObstaculos=transicion-Iobstaculos;
+               
                %Giro=0;%Dependiendo de su signo se gira a un lado u a otro.
                %for j = Iobstaculos:transicion
                 %    Giro=Giro+(distancia(j)*giro_cabeza(j));

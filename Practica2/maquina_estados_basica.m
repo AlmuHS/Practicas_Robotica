@@ -24,8 +24,8 @@ clear giro_derecho giro_izquierdo
 global radio_rueda
 global l %distancia entre ruedas
 
-l=7.4;%En nuestro robot en 5.75
-radio_rueda=4;%En nuestro robot 2.8
+l=7.5;%En nuestro robot en 5.75
+radio_rueda=4.46 ;%En nuestro robot 2.8
 Kgiro = 0.25; %constante para el giro
 ref_theta = 90; %angulo de giro deseado
 
