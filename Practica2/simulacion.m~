@@ -49,6 +49,8 @@ t(k+1)=t0;
 i = 1;
 pos_dest = camino(i,:);
 
+distancia = 4;
+
 while (t0+h*k) < tf,
     %actualizaci�n
     k=k+1;
@@ -66,7 +68,7 @@ while (t0+h*k) < tf,
      min_dist = minima_distancia_new(camino, pos_actual);
      i = i + min_dist;
      
-     pos_dest = camino(i,:);
+     pos_dest = camino(i+distancia,:);
      
      
      volante = calculo_angulo_triciclo(l, pos_actual, pos_dest, volante);

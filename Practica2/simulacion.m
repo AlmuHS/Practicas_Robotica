@@ -52,8 +52,9 @@ while (t0+h*k) < tf,
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %valores de los parámetros de control
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ distancia = 80;
  min_dist = minima_distancia_new(camino, pose(1:2,k));
- pos_dest=camino(min_dist+20,:);
+ pos_dest=camino(mod(min_dist+distancia,1717),:);
  % estas son las variables de control    
  velocidad=5;
  volante = calculo_angulo_triciclo(l, pose(1:2,k), pos_dest, pose(3,k));
