@@ -29,4 +29,5 @@ if (valor_derecho>=valor_izquierdo)
 else
     referencia=(sum(dist_izquierda.*angulo_izquierda))/sum(dist_izquierda);
 end
-    
+   
+

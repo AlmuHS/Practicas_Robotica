@@ -24,10 +24,10 @@ clear giro_derecho giro_izquierdo
 global radio_rueda
 global l %distancia entre ruedas
 
-l=7.4;%En nuestro robot en 5.75
+l=7.5;%En nuestro robot en 5.75
 radio_rueda=4.46 ;%En nuestro robot 2.8
 Kgiro = 0.25; %constante para el giro
-ref_theta = 90; %angulo de giro deseado
+ref_theta = -   90; %angulo de giro deseado
 
 % Declaraci�n de sensores
 OpenSwitch(SENSOR_2); % definici�n del sensor de contacto detceta colii�n
@@ -82,9 +82,9 @@ Iobstaculos=0;
 t(i)=0;
 
 estado=1; %estado inicial
-stop_distance=20; %distancia de para ante obst�culo
-t_marcha_atras=2; %tiempo de marcha hacia atr�s.
-t_giro=4;%tiempo de giro. New
+stop_distance=40; %distancia de para ante obst�culo
+t_marcha_atras=1.5; %tiempo de marcha hacia atr�s.
+t_giro=3;%tiempo de giro. New
 transicion=1% inicializa la variable que marca el inicio el mov de la cabeza
 T = 9 %periodo
 
@@ -134,9 +134,13 @@ while  (pulsador==0)
         switch estado
             
             case 1 %andando hacia delante
-                if (GetUltrasonic(SENSOR_4)<stop_distance) %si la distancia es menor que 35 para
-                    estado=2; %transici�n de estado de paro
-                    transicion=i; %indice que marca el inicio del estado 2
+                 if (GetUltrasonic(SENSOR_4)<stop_distance) %si la distancia es menor que 35 para
+                     estado=2; %transici�n de estado de paro
+                     transicion=i; %indice que marca el inicio del estado 2
+                 end
+                if (GetSwitch(SENSOR_2)==1)
+                   estado=5;
+                   transicion=i;
                 end
                 
             
@@ -156,6 +160,9 @@ while  (pulsador==0)
                 inc = t(i) - t(transicion);
                 
                 if (inc >= T+1)
+                    %Hacer aqui el calculo del angulo de referencia al que
+                    %debemos dirigirnos.
+                    ref_theta=-calculo_referencia(distancia,giro_cabeza,transicion);
                     estado=4; %la transici�n a estado girando robot
                     transicion=i; %indice que marca el inicio del estado
                     motor_cabeza.Stop('off'); %Para la cabeza si no ha terminado completamente
@@ -170,8 +177,17 @@ while  (pulsador==0)
                 
            case 5 %marcha atr�s
                 if (t(i)-t(transicion)>t_marcha_atras)                  
-                    estado=2; %transici�n a estado girando cabeza
-                    transicion=i; %indice que marca el inicio del estado 2                 
+                    estado=3; %transici�n a estado girando cabeza
+                    transicion=i; %indice que marca el inicio del estado 2 
+                     %establece los valores de control 
+                vel=0;
+                Power1=vel;
+                Power2=vel;
+                
+              %---------------------
+              %Manda los comandos de control a los motores
+              %-------------
+               Traction_motor_control;
                 end
             
         end %del siwtch
@@ -231,15 +247,11 @@ while  (pulsador==0)
                 %    Giro=Giro+(distancia(j)*giro_cabeza(j));
               % end
                %if(Giro>0)%Giro derecha
-                   Power = int8(Kgiro *[ref_theta - yaw(i)]);
+                   Power = int8(Kgiro *[ref_theta + yaw(transicion) - yaw(i)]);
+
                    Power1=Power;
                    Power2=-Power;
-               %else %Giro izquierda
-                   %Power = int8(Kgiro *[ref_theta - theta(i)]);
-                   %Power1=-Power;
-                   %Power2=Power;
-%                end
-               
+
               %---------------------
               %Manda los comandos de control a los motores
               %-------------

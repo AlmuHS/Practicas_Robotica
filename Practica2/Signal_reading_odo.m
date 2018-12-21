@@ -13,7 +13,7 @@
     
     if (estado==3) %cuando giro la cabeza no leo encoders de las ruedas
         cabeza=NXT_GetOutputState(2);
-        giro_cabeza(i)=cabeza.RotationCount;  
+        giro_cabeza(i)=-cabeza.RotationCount;  
         giro_derecho(i)=giro_derecho(i-1);
         giro_izquierdo(i)=giro_izquierdo(i-1);
         

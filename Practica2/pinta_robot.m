@@ -101,7 +101,7 @@ function mapa_=pinta_robot(x,y,distanciaP,theta,alfa, mapa)
     end
     
     %plot(punto_global(1,:),punto_global(2,:),'*G')
-    axis([-40,40,-40,40])
+    axis([-120,120,-120,120])
     drawnow
     
     
