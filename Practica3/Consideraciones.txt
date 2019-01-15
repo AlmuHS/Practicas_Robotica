@@ -1,0 +1,10 @@
+Velocidad que debe seguir el robot:
+
+	La velocidad que siga el robot debe ser proporcional a la distancia, de la que se encuentre del punto destino.
+
+	Esta distancia será la distancia en línea recta. La velocidad es=K*v*error en la distancia
+	Esta velocidad puede dar por encima de unos límites, por lo que debemos limitarla.
+
+La parada del bucle debe realizarse por velocidad en lugar de por tiempo.
+
+	

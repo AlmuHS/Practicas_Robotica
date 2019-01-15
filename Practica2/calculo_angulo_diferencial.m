@@ -15,6 +15,8 @@ XF = 10
 YF = 15
 
 inc = (X0 - XF) * sin(Theta0) - (Y0 - YF) * cos(Theta0)
-LH = sqrt((X0 - XF)^2 + (Y0 - YF)^2))
+LH = sqrt((X0 - XF)^2 + (Y0 - YF)^2)
 
 angle = atan(p * l)
+
+%ESTA VERSION ES ANTIGUA->MIRAR Vruedas

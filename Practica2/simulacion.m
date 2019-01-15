@@ -52,7 +52,7 @@ while (t0+h*k) < tf,
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %valores de los parámetros de control
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- distancia = 80;
+ distancia = 40;
  min_dist = minima_distancia_new(camino, pose(1:2,k));
  pos_dest=camino(mod(min_dist+distancia,1717),:);
  % estas son las variables de control    
