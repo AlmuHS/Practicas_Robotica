@@ -1,5 +1,5 @@
 [Bluetooth]
-SerialPort=COM5
+SerialPort=/dev/rfcomm20
 BaudRate=57600
 DataBits=8
 SendSendPause=10

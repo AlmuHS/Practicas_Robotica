@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Ejemplo de control del movimiento del robot
-% estimando la posición mediante odometría
+% estimando la posiciï¿½n mediante odometrï¿½a
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear t;
@@ -31,7 +31,7 @@ clear t;
 i=1;
 tstart = tic;
 
-%Inicialización de la odometría
+%Inicializaciï¿½n de la odometrï¿½a
 
 A=NXT_GetOutputState(0);
 B=NXT_GetOutputState(1);
@@ -44,17 +44,17 @@ t(i)=0;
 power1(i)=0;
 power2(i)=0;
 error_distancia(i)=Inf;
-%Configuración inicial:
+%Configuraciï¿½n inicial:
 PosIni=[0 0];
 AngIni=pi/4;
 %Destino
-PosFin=[80 -40];
+PosFin=[-40 0];
 %Constante
 K=0.22
 
-while  error_distancia(i)>3
-%while t(i)<3
-    i=i+1; %incremento del índice
+%while  error_distancia(i)>3
+while t(i)<10
+    i=i+1; %incremento del ï¿½ndice
     
     %Error distancia
     %error_distancia=sqrt();
@@ -84,33 +84,62 @@ while  error_distancia(i)>3
     power1(i)=K*power1(i)*error_distancia(i);
     power2(i)=K*power2(i)*error_distancia(i);
     
-    %limitamos que la potencia se mantega dentro de los límites.
+    limite = 40;
+    
+    %limitamos que la potencia se mantega dentro de los lï¿½mites.
     if power1(i)>30 | power1(i)<-30
         if power1(i)>30
+            prop=(power1(i)-30)/power1(i);
             power1(i)=30;
+            if power2(i)>0
+                power2(i)=power2(i)-prop*power2(i);
+            else
+                power2(i)=power2(i)+prop*power2(i);
+            end
         else
+            prop=power1(i)+30/power(i);
             power1(i)=-30;
+            if power2(i)>0
+                power2(i)=power2(i)-prop*power2(i);
+            else
+                power2(i)=power2(i)+prop*power2(i);
+            end
         end
     end
-    
-    if power2(i)>30 | power2(i)<-30
+     if power2(i)>30 | power2(i)<-30
+         
         if power2(i)>30
+            prop=(power2(i)-30)/power2(i);
             power2(i)=30;
+         
+            if power2(i)>0
+                power1(i)=power1(i)-prop*power1(i);
+            else
+                power1(i)=power1(i)+prop*power1(i);
+            end
         else
+            prop=power2(i)+30/power2(i);
             power2(i)=-30;
+            if power2(i)>0
+                power1(i)=power1(i)-prop*power1(2);
+            else
+                power1(i)=power1(i)+prop*power1(i);
         end
     end
+     
+    
     
     %power1=20;  
     %power2=20;
     
-    motor_A.Power = int8(power1(i));  
-    motor_B.Power = int8(power2(i));
+    motor_A.Power = round(power1(i));  
+    motor_B.Power = round(power2(i));
   
-  %Actuación de los motores
+  %Actuaciï¿½n de los motores
      motor_A.SendToNXT(); % this is actually the moment we start the motor
      motor_B.SendToNXT(); % this is actually the moment we start the motor
 
+     end
 end
 
 
