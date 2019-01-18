@@ -7,11 +7,13 @@ clear t;
 clear theta;
 clear x;
 clear y;
+clear power1;
+clear power2;
 
 global radio_rueda
 global l %distancia entre centro y ruedas
 
-radio_rueda=2.8;%radio_ajustado r=3
+radio_rueda=3;%radio_ajustado r=3
 l=5.75; %distancia entre entre centro y ruedas l_ajustado=6.2
 conversion=pi/180;
 %crea el objeto motor
@@ -39,14 +41,19 @@ x(i)=0;
 y(i)=0;
 theta(i)=0;
 t(i)=0;
-
+power1(i)=0;
+power2(i)=0;
+error_distancia(i)=Inf;
 %Configuración inicial:
 PosIni=[0 0];
 AngIni=pi/4;
 %Destino
-PosFin=[5 5];
+PosFin=[80 -40];
+%Constante
+K=0.22
 
-while  t(i)<15
+while  error_distancia(i)>3
+%while t(i)<3
     i=i+1; %incremento del índice
     
     %Error distancia
@@ -54,7 +61,7 @@ while  t(i)<15
     
     %lectura de los encoder
     A=NXT_GetOutputState(0);
-    B=NXT_GetOutputState(2);
+    B=NXT_GetOutputState(1);
     giro_A(i)=A.RotationCount*conversion;
     giro_B(i)=B.RotationCount*conversion;
     
@@ -65,18 +72,40 @@ while  t(i)<15
     %lectura del tiempo
     t(i)= toc(tstart);
     %Valores por defecto
-    %power1=30;  
-    %power2=10;
-    curvatura=Calcula_curvatura(PosIni,AngIni,PosFin);
-    [power1 power2]=Calculo_potencia(20,curvatura);
     
+    Pos=[x(i) y(i)];
+    curvatura(i)=Calcula_curvatura(Pos,theta(i),PosFin);
+    [power1(i) power2(i)]=Calculo_potencia(20,curvatura(i));
+    
+    %La velocidad que debe seguir el robot debe ser proporcional a la
+    %distancia al punto destino
+    error_distancia(i)=sqrt((x(i)-PosFin(1))^2+(y(i)-PosFin(2))^2);
     %Ajustamos potencia
-    %power1=K*power1*error_distancia;
-    %power2=K*power2*error_distancia;
-
+    power1(i)=K*power1(i)*error_distancia(i);
+    power2(i)=K*power2(i)*error_distancia(i);
     
-    motor_A.Power = power1;  
-    motor_B.Power = power2;
+    %limitamos que la potencia se mantega dentro de los límites.
+    if power1(i)>30 | power1(i)<-30
+        if power1(i)>30
+            power1(i)=30;
+        else
+            power1(i)=-30;
+        end
+    end
+    
+    if power2(i)>30 | power2(i)<-30
+        if power2(i)>30
+            power2(i)=30;
+        else
+            power2(i)=-30;
+        end
+    end
+    
+    %power1=20;  
+    %power2=20;
+    
+    motor_A.Power = int8(power1(i));  
+    motor_B.Power = int8(power2(i));
   
   %Actuación de los motores
      motor_A.SendToNXT(); % this is actually the moment we start the motor

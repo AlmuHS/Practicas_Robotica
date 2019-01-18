@@ -1,4 +1,4 @@
-function [x_new y_new theta_new]=calculo_odometria(giro_A,giro_C,x,y,theta,i)
+function [x_new y_new theta_new]=calculo_odometria(giro_A,giro_B,x,y,theta,i)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Calcula la odometria de un robot diferencial
@@ -10,7 +10,7 @@ global l %distancia entre ruedas
 
 %calculo del incremento del angulo de rodado
     dalfa1=giro_A(i)-giro_A(i-1);
-    dalfa2=giro_C(i)-giro_C(i-1);
+    dalfa2=giro_B(i)-giro_B(i-1);
     
     %Cálculo del ángulo
      theta_new=theta(i-1)+radio_rueda*(dalfa1-dalfa2)/(2*l);

@@ -1,4 +1,4 @@
-function [x_new y_new theta_new]=calculo_odometria(giro_A,giro_C,x,y,theta,i)
+function [x_new y_new theta_new]=calculo_odometria(giro_A,giro_B,x,y,theta,i)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Calcula la odometria de un robot diferencial
