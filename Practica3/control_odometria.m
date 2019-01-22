@@ -14,7 +14,7 @@ global radio_rueda
 global l %distancia entre centro y ruedas
 
 radio_rueda=3;%radio_ajustado r=3
-l=5.75; %distancia entre entre centro y ruedas l_ajustado=6.2
+l=5.60; %distancia entre entre centro y ruedas l_ajustado=6.2 5.75!
 conversion=pi/180;
 %crea el objeto motor
 
@@ -50,11 +50,13 @@ AngIni=pi/4;
 %Destino
 PosFin=[-40 0];
 %Constante
-K=0.22
+K=0.22;
+limite=10;
 
-%while  error_distancia(i)>3
-while t(i)<10
-    i=i+1; %incremento del ï¿½ndice
+
+while  error_distancia(i)>1
+%while t(i)<15
+    i=i+1; %incremento del índice
     
     %Error distancia
     %error_distancia=sqrt();
@@ -84,21 +86,21 @@ while t(i)<10
     power1(i)=K*power1(i)*error_distancia(i);
     power2(i)=K*power2(i)*error_distancia(i);
     
-    limite = 40;
-    
-    %limitamos que la potencia se mantega dentro de los lï¿½mites.
-    if power1(i)>30 | power1(i)<-30
-        if power1(i)>30
-            prop=(power1(i)-30)/power1(i);
-            power1(i)=30;
+%limitamos que la potencia se mantega dentro de los l?mites.
+    if power1(i)>limite | power1(i)<-limite
+        if power1(i)>limite
+            prop=(power1(i)-limite)/power1(i);
+            power1(i)=limite;
+
             if power2(i)>0
                 power2(i)=power2(i)-prop*power2(i);
             else
                 power2(i)=power2(i)+prop*power2(i);
             end
         else
-            prop=power1(i)+30/power(i);
-            power1(i)=-30;
+            prop=(power1(i)+limite)/power1(i);
+            power1(i)=-limite;
+
             if power2(i)>0
                 power2(i)=power2(i)-prop*power2(i);
             else
@@ -106,11 +108,12 @@ while t(i)<10
             end
         end
     end
-     if power2(i)>30 | power2(i)<-30
+
+     if power2(i)>limite | power2(i)<-limite
          
-        if power2(i)>30
-            prop=(power2(i)-30)/power2(i);
-            power2(i)=30;
+        if power2(i)>limite
+            prop=(power2(i)-limite)/power2(i);
+            power2(i)=limite;
          
             if power2(i)>0
                 power1(i)=power1(i)-prop*power1(i);
@@ -118,16 +121,16 @@ while t(i)<10
                 power1(i)=power1(i)+prop*power1(i);
             end
         else
-            prop=power2(i)+30/power2(i);
-            power2(i)=-30;
-            if power2(i)>0
-                power1(i)=power1(i)-prop*power1(2);
+            %comprueba=power2(i);
+            prop=(power2(i)+limite)/power2(i);
+            power2(i)=-limite;
+            if power1(i)>0
+                power1(i)=power1(i)-prop*power1(i);
             else
                 power1(i)=power1(i)+prop*power1(i);
+            end
         end
-    end
-     
-    
+     end
     
     %power1=20;  
     %power2=20;
