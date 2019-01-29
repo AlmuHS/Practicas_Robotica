@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Ejemplo de control del movimiento del robot
 % estimando la posici�n mediante odometr�a
@@ -127,3 +128,4 @@ end
 
 motor_A.Stop('off'); %lo para
 motor_B.Stop('off');
+
